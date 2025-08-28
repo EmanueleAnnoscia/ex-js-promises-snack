@@ -67,30 +67,31 @@
 // 🏆 Snack 2
 
 //funzione di randomizzazione del dado
- const diceRoll = (min,max) => Math.floor(Math.random() * (max - min +1)) + min;
+const diceRoll = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 
 
 //funzione di lancio del dado
-function creaLanciaDado(){
-    return new Promise ((resolve, reject) =>{
+function creaLanciaDado() {
+    return new Promise((resolve, reject) => {
         console.log('sto lanciando il dado...')
 
         let result = 0;
         let lastResult = 0;
-        
-        setTimeout(()=>{
-            if(Math.random()<0.2){
+
+        setTimeout(() => {
+            if (Math.random() < 0.2) {
                 reject('il dado si è rotto');
-            }else{
-               result = diceRoll(1, 6);
-               if(result === lastResult){
-                console.log('incredibile!')
-               }
-            lastResult = result;
-            resolve(result);
+                lastResult = null;
+            } else {
+                result = diceRoll(1, 6);
+                if (result === lastResult) {
+                    console.log('incredibile!')
+                }
+                lastResult = result;
+                resolve(result);
             }
-            
+
         }, 3000)
 
 
@@ -98,5 +99,14 @@ function creaLanciaDado(){
 }
 
 creaLanciaDado()
-    .then(res => console.log("Hai ottenuto:", res))
+    .then(res => {
+
+        console.log("Hai ottenuto:", res)
+        creaLanciaDado()
+            .then(res => console.log("Hai ottenuto:", res))
+            .catch(err => console.error(err));
+
+    })
     .catch(err => console.error(err));
+
+
